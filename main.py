@@ -24,15 +24,13 @@ def mask_prediction(x_train, y_train, x_test, y_test, x_val=None, y_val=None):
     return acc, f1, val_loss
 
 
-def train_HGNM(parser):
+def train_HGNM(parser, train, test):
     seed = 123
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-
-    train, test = parser.train, parser.test
     lr = parser.lr
     weight_decay = parser.weight_decay
     K = parser.K
@@ -158,11 +156,7 @@ skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
 labels = pickle.load(open('labels.pkl', 'rb'))
 accs, f1s = [], []
 for fold, (train, test) in enumerate(skf.split(np.zeros(labels.shape), labels)):
-    parser.add_argument('--train', default=train,
-                        help="train idx")
-    parser.add_argument('--test', default=test,
-                        help="test idx")
-    acc, f1 = train_HGNM(parser)
+    acc, f1 = train_HGNM(parser, train, test)
     accs.append(acc)
     f1s.append(f1)
 
