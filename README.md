@@ -1,4 +1,4 @@
-# HGNM
+# HGM
 
 Source code for "A Heterogeneous Graph Based Framework for Multimodal Neuroimaging Fusion Learning"
 
