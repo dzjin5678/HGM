@@ -1,6 +1,6 @@
 # HGNM
 
-Source code for "A Multimodal Neuroimaging Fusion Learning Framework Based on Heterogeneous Graph Neural Network"
+Source code for "A Heterogeneous Graph Based Framework for Multimodal Neuroimaging Fusion Learning"
 
 Main Dependencies
 ------------
