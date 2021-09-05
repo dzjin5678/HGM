@@ -24,19 +24,19 @@ def mask_prediction(x_train, y_train, x_test, y_test, x_val=None, y_val=None):
     return acc, f1, val_loss
 
 
-def train_HGNM(parser, train, test):
+def train_HGNM(args, train, test):
     seed = 123
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-    lr = parser.lr
-    weight_decay = parser.weight_decay
-    K = parser.K
-    pre_epoch = parser.pre_epoch
+    lr = args.lr
+    weight_decay = args.weight_decay
+    K = args.K
+    pre_epoch = args.pre_epoch
 
-    train_loader, test_loader = load_dataloader(train, test, bacth_size=parser.batch_size)
+    train_loader, test_loader = load_dataloader(train, test, bacth_size=args.batch_size)
     print('finish data loading')
     etypes = ['l-r', 'l-l']
 
@@ -44,9 +44,9 @@ def train_HGNM(parser, train, test):
         'l': [('lrl', ['l-r', 'r-l'])],
         'r': [('rlr', ['r-l', 'l-r'])]
     }
-    n_epochs = parser.epochs
-    encode_dropout = parser.dropout
-    hidden_dims = parser.hidden_dim
+    n_epochs = args.epochs
+    encode_dropout = args.dropout
+    hidden_dims = args.hidden_dim
     device = torch.device('cuda:0')
     model = HeteroGraphCLF(in_dim=246, hidden_dims=hidden_dims, weighted=True, dropout=encode_dropout,
                            activation=nn.PReLU(),
@@ -156,7 +156,7 @@ skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
 labels = pickle.load(open('labels.pkl', 'rb'))
 accs, f1s = [], []
 for fold, (train, test) in enumerate(skf.split(np.zeros(labels.shape), labels)):
-    acc, f1 = train_HGNM(parser, train, test)
+    acc, f1 = train_HGNM(args, train, test)
     accs.append(acc)
     f1s.append(f1)
 
