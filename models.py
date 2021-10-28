@@ -262,13 +262,13 @@ class HeteroRGCNLayer(nn.Module):
 
                     etype_gcn_layer = self.gcn_layers[etype]
                     src_feat = feat_dict[srctype]
-                    dst_etype_feat = etype_gcn_layer(G, src_feat, etype)
+                    dst_etype_feat = etype_gcn_layer(G, src_feat, srctype + '-' + dsttype)
                     G.nodes[dsttype].data['inter'] = dst_etype_feat
             else:
                 for (srctype, dsttype) in [('l', 'l'), ('r', 'r')]:
                     etype_gcn_layer = self.gcn_layers[etype]
                     src_feat = feat_dict[srctype]
-                    dst_etype_feat = etype_gcn_layer(G, src_feat, etype)
+                    dst_etype_feat = etype_gcn_layer(G, src_feat, srctype + '-' + dsttype)
                     G.nodes[dsttype].data['intra'] = dst_etype_feat
 
 
